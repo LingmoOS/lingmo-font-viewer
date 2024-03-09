@@ -1,0 +1,54 @@
+{
+    "app-id": "org.lingmo.font-viewerDevel",
+    "runtime": "org.lingmo.Platform",
+    "runtime-version" : "master",
+    "sdk": "org.lingmo.Sdk",
+    "command": "lingmo-font-viewer",
+    "rename-appdata-file": "org.lingmo.font-viewer.appdata.xml",
+    "rename-desktop-file": "org.lingmo.font-viewer.desktop",
+    "tags": ["nightly"],
+    "finish-args": [
+        "--device=dri",
+        "--share=ipc",
+        "--socket=wayland",
+        "--socket=fallback-x11",
+        "--talk-name=org.gtk.vfs", "--talk-name=org.gtk.vfs.*",
+        "--talk-name=ca.desrt.conf", "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
+        "--filesystem=xdg-run/dconf", "--filesystem=~/.config/dconf:ro"
+    ],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig", "/share/pkgconfig",
+        "/share/aclocal",
+        "/man", "/share/man", "/share/gtk-doc",
+        "*.la", ".a",
+        "/lib/girepository-1.0",
+        "/share/gir-1.0",
+        "/share/doc"
+    ],
+    "modules": [
+        {
+            "name": "lingmo-desktop",
+            "buildsystem": "meson",
+            "config-opts": ["-Dbuild_gtk4=true"],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.lingmo.org/Lingmo/lingmo-desktop"
+                }
+            ]
+        },
+        {
+            "name": "lingmo-font-viewer",
+            "buildsystem": "meson",
+            "builddir" : true,
+            "config-opts": ["-Dprofile=development"],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "../.."
+		}
+            ]
+        }
+    ]
+}
